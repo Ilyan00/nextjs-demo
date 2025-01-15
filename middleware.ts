@@ -8,7 +8,8 @@ export async function middleware(request: NextRequest) {
   const isAuthorized = await checkAuth();
 
   if (
-    request.nextUrl.pathname.startsWith("/mon-compte") &&
+    (request.nextUrl.pathname.startsWith("/mon-compte") ||
+      request.nextUrl.pathname.endsWith("/add")) &&
     isAuthorized.status >= 300
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
