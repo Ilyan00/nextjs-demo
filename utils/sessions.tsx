@@ -2,6 +2,7 @@
 
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
 const secretKey = process.env.JWT_SECRET;
 const key = new TextEncoder().encode(secretKey);
@@ -47,4 +48,23 @@ export async function getSession() {
   const session = cookie.get("session")?.value;
   if (!session) return null;
   return await decrypt(session);
+}
+
+export async function checkAuth() {
+  const session = await getSession();
+
+  if (!session) {
+    // If no session set
+    return NextResponse.json(
+      { message: "User is not authenticated" },
+      { status: 403 }
+    );
+  }
+
+  if (session.exp < Date.now()) {
+    // If JWT expired
+    return NextResponse.json({ message: "Session expired" }, { status: 403 });
+  }
+
+  return NextResponse.json({ message: "Logged" }, { status: 200 });
 }
