@@ -5,7 +5,6 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { SkillError } from "@/types/SkillError";
-import { error } from "console";
 
 // Define rules for the form data
 const SkillSchema = z.object({

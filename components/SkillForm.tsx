@@ -1,10 +1,10 @@
-"use server";
+"use client";
 
-import { CreateSkill } from "@/actions/CreateSkill";
 import { useFormState } from "react-dom";
+import { CreateSkill } from "@/actions/CreateSkill";
 import { SkillError } from "@/types/SkillError";
 
-export default async function SkillForm() {
+export default function SkillForm() {
   const initialState: SkillError = { message: null, errors: {} };
   const [state, formAction] = useFormState<SkillError, FormData>(
     CreateSkill,
