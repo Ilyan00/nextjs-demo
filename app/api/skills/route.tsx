@@ -5,7 +5,14 @@ import { NextResponse } from "next/server";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
-export async function getSkills() {
+export async function GET() {
+  // Call getSkills function (see below)
+  const response = await getSkills();
+
+  return NextResponse.json({ response });
+}
+
+async function getSkills() {
   let db = null;
 
   // Check if the database instance has been initialized
@@ -24,5 +31,5 @@ export async function getSkills() {
   const sql = `SELECT rowid, skill_name, level FROM skills WHERE user = ?`;
   const skills = await db.all(sql, session.rowid);
 
-  return NextResponse.json(skills);
+  return skills;
 }

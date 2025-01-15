@@ -2,11 +2,35 @@
 
 import { Skill } from "@/types/Skill";
 import { useEffect, useState } from "react";
+import { useFormState } from "react-dom";
 
 export default function SkillsClient() {
   const [skillsList, setSkillsList] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+
+  // Catch delete action
+  const handleDelete = (skill: Skill) => {
+    deleteSkill(skill.rowid);
+  };
+
+  // Execute deletion
+  const deleteSkill = async (skill_id: number | undefined) => {
+    // Call API with DELETE method
+    const response = await fetch(`/api/skills/delete/${skill_id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok || response.status >= 300) {
+      setError("Une erreur est survenue");
+      return;
+    }
+
+    // Update state with filter method to delete the row
+    setSkillsList((prevList) =>
+      prevList.filter((skill: Skill) => skill.rowid !== skill_id)
+    );
+  };
 
   const getSkills = async () => {
     const response = await fetch("/api/skills");
@@ -35,9 +59,12 @@ export default function SkillsClient() {
       ) : skillsList.length > 0 ? (
         skillsList.map((skill: Skill, i: number) => {
           return (
-            <p key={i}>
-              {skill.skill_name} : {skill.level}/5
-            </p>
+            <div key={i}>
+              <p>
+                {skill.skill_name} : {skill.level}/5
+                <button onClick={() => handleDelete(skill)}>Supprimer</button>
+              </p>
+            </div>
           );
         })
       ) : (
