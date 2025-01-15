@@ -35,6 +35,18 @@ a {
   text-decoration: none;
 }
 
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+nav .active {
+  border-bottom: 1px solid #ff0000;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
