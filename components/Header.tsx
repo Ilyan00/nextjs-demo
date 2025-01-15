@@ -3,8 +3,17 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import { logout } from "@/utils/sessions";
 
 export default function Header() {
+  const router = useRouter();
+
+  const Logout = () => {
+    logout();
+    return router.push("/login");
+  };
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
   return (
@@ -26,6 +35,7 @@ export default function Header() {
         Mon profil
       </Link>
       <p>Bienvenue {searchParams.get("name")} </p>
+      <button onClick={Logout}>Logout</button>
     </nav>
   );
 }
